@@ -1,4 +1,4 @@
-package com.lighttripmap
+package com.routeglow.guide
 
 import android.app.Application
 import com.facebook.react.PackageList
