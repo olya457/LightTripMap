@@ -11,15 +11,15 @@ import {
   View,
 } from 'react-native';
 import {Button} from '../components/Buttons';
-import {getFieldNote} from '../data/fieldNotes';
+import {getSignalNote} from '../data/fieldNotes';
 import {useNavigation} from '../navigation/NavigationContext';
 import {colors, getNavigationMetrics, layout} from '../theme';
 
-export function FieldNoteDetailScreen({noteId}: {noteId: string}) {
+export function SignalNoteDetailScreen({noteId}: {noteId: string}) {
   const {goBack} = useNavigation();
   const {width, height} = useWindowDimensions();
   const metrics = getNavigationMetrics(width, height);
-  const note = getFieldNote(noteId);
+  const note = getSignalNote(noteId);
 
   if (!note) {
     return null;
@@ -45,8 +45,10 @@ export function FieldNoteDetailScreen({noteId}: {noteId: string}) {
           style={[styles.hero, metrics.compact && styles.heroCompact]}>
           <View style={styles.heroShade} />
           <View style={styles.heroActions}>
-            <Pressable onPress={() => goBack({name: 'notes'})} style={styles.topButton}>
-              <Text style={styles.topButtonText}>‹ Notes</Text>
+            <Pressable
+              onPress={() => goBack({name: 'signals'})}
+              style={styles.topButton}>
+              <Text style={styles.topButtonText}>‹ Signals</Text>
             </Pressable>
             <Pressable onPress={shareNote} style={styles.roundButton}>
               <Text style={styles.roundButtonText}>↗</Text>
@@ -64,7 +66,9 @@ export function FieldNoteDetailScreen({noteId}: {noteId: string}) {
           <Text style={[styles.title, metrics.compact && styles.titleCompact]}>
             {note.title}
           </Text>
-          <Text style={styles.meta}>{note.date}   {note.readTime}</Text>
+          <Text style={styles.meta}>
+            {note.date} {note.readTime}
+          </Text>
           <View style={styles.divider} />
           {note.body.map(paragraph => (
             <Text key={paragraph} style={styles.paragraph}>
@@ -72,7 +76,7 @@ export function FieldNoteDetailScreen({noteId}: {noteId: string}) {
             </Text>
           ))}
           <Button
-            title="Share Note"
+            title="Share Signal Note"
             emoji="↗"
             variant="ghost"
             onPress={shareNote}

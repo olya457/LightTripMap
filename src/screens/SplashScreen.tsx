@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {media} from '../assets/media';
+import {lightningMedia} from '../assets/media';
 import {colors, layout} from '../theme';
 
 const stars = Array.from({length: 26}, (_, index) => ({
@@ -52,7 +52,9 @@ export function SplashScreen() {
   }, [pulse]);
 
   return (
-    <ImageBackground source={media.launchNightscape} style={styles.root}>
+    <ImageBackground
+      source={lightningMedia.launchNightscape}
+      style={styles.root}>
       <View style={styles.starLayer}>
         {stars.map(star => (
           <View
@@ -65,7 +67,7 @@ export function SplashScreen() {
         ))}
       </View>
       <Animated.Image
-        source={media.launchCompassMark}
+        source={lightningMedia.launchMark}
         style={[
           styles.icon,
           {

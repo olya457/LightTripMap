@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
-import {media} from '../assets/media';
+import {lightningMedia} from '../assets/media';
 import {AppScreen} from '../components/AppScreen';
-import {PlaceCard} from '../components/PlaceCards';
-import {guidePlaces} from '../data/places';
+import {LightningSiteCard} from '../components/PlaceCards';
+import {lightningSites} from '../data/places';
 import {useNavigation} from '../navigation/NavigationContext';
 import {colors} from '../theme';
-import {GuidePlace} from '../types';
+import {LightningSite} from '../types';
 
 const bounds = {
   minLatitude: 2.5,
@@ -15,27 +15,27 @@ const bounds = {
   maxLongitude: -61.5,
 };
 
-const markerColor: Record<GuidePlace['routeType'], string> = {
-  viewpoint: colors.blue,
-  waterline: colors.cyan,
-  canopy: '#ad5cff',
+const markerColor: Record<LightningSite['watchType'], string> = {
+  stormCore: colors.blue,
+  lagoonBase: colors.cyan,
+  clearSkyLink: '#ad5cff',
 };
 
-const markerSymbol: Record<GuidePlace['routeType'], string> = {
-  viewpoint: '◎',
-  waterline: '◇',
-  canopy: '✦',
+const markerSymbol: Record<LightningSite['watchType'], string> = {
+  stormCore: '◎',
+  lagoonBase: '◇',
+  clearSkyLink: '✦',
 };
 
 const clampPercent = (value: number) => Math.max(6, Math.min(94, value));
 
-function projectPlace(place: GuidePlace, zoom: number) {
+function projectLightningSite(site: LightningSite, zoom: number) {
   const rawLeft =
-    ((place.coordinates.longitude - bounds.minLongitude) /
+    ((site.coordinates.longitude - bounds.minLongitude) /
       (bounds.maxLongitude - bounds.minLongitude)) *
     100;
   const rawTop =
-    ((bounds.maxLatitude - place.coordinates.latitude) /
+    ((bounds.maxLatitude - site.coordinates.latitude) /
       (bounds.maxLatitude - bounds.minLatitude)) *
     100;
 
@@ -48,57 +48,58 @@ function projectPlace(place: GuidePlace, zoom: number) {
   };
 }
 
-export function RouteAtlasScreen({
-  selectedPlaceId,
+export function LightningMapScreen({
+  selectedSiteId,
 }: {
-  selectedPlaceId?: string;
+  selectedSiteId?: string;
 }) {
   const {navigate} = useNavigation();
-  const [selectedId, setSelectedId] = useState(selectedPlaceId);
+  const [selectedId, setSelectedId] = useState(selectedSiteId);
   const [zoom, setZoom] = useState(1);
   const selected = useMemo(
-    () => guidePlaces.find(item => item.id === selectedId),
+    () => lightningSites.find(item => item.id === selectedId),
     [selectedId],
   );
 
   useEffect(() => {
-    if (selectedPlaceId) {
-      setSelectedId(selectedPlaceId);
+    if (selectedSiteId) {
+      setSelectedId(selectedSiteId);
       setZoom(1.18);
     }
-  }, [selectedPlaceId]);
+  }, [selectedSiteId]);
 
-  const focusPlace = (place: GuidePlace) => {
-    setSelectedId(place.id);
+  const focusSite = (site: LightningSite) => {
+    setSelectedId(site.id);
   };
 
   const adjustZoom = (factor: number) => {
     setZoom(current => Math.max(0.82, Math.min(1.55, current * factor)));
   };
 
-  const resetAtlas = () => {
+  const resetMap = () => {
     setSelectedId(undefined);
     setZoom(1);
   };
 
   return (
-    <AppScreen eyebrow="Route Atlas" title="Map Stops" scroll={false}>
+    <AppScreen eyebrow="Lightning Map" title="Watch Sites" scroll={false}>
       <ImageBackground
-        source={media.introRouteAtlas}
+        source={lightningMedia.introMapBackdrop}
         style={styles.mapCard}
         imageStyle={styles.mapImage}>
         <View style={styles.mapTint} />
         <View style={styles.gridLineVertical} />
         <View style={styles.gridLineHorizontal} />
-        {guidePlaces.map(place => {
-          const active = selectedId === place.id;
-          const color = markerColor[place.routeType];
-          const position = projectPlace(place, zoom);
+        <View style={styles.catatumboPulse} />
+        {lightningSites.map(site => {
+          const active = selectedId === site.id;
+          const color = markerColor[site.watchType];
+          const position = projectLightningSite(site, zoom);
 
           return (
             <Pressable
-              key={place.id}
-              onPress={() => focusPlace(place)}
+              key={site.id}
+              onPress={() => focusSite(site)}
               style={[
                 styles.markerWrap,
                 position,
@@ -112,27 +113,35 @@ export function RouteAtlasScreen({
                   active && styles.markerCoreActive,
                 ]}>
                 <Text style={styles.markerText}>
-                  {markerSymbol[place.routeType]}
+                  {markerSymbol[site.watchType]}
                 </Text>
               </View>
             </Pressable>
           );
         })}
         <View style={styles.controls}>
-          <Pressable onPress={() => adjustZoom(1.18)} style={styles.controlButton}>
+          <Pressable
+            onPress={() => adjustZoom(1.18)}
+            style={styles.controlButton}>
             <Text style={styles.controlText}>+</Text>
           </Pressable>
-          <Pressable onPress={() => adjustZoom(0.84)} style={styles.controlButton}>
+          <Pressable
+            onPress={() => adjustZoom(0.84)}
+            style={styles.controlButton}>
             <Text style={styles.controlText}>−</Text>
           </Pressable>
-          <Pressable onPress={resetAtlas} style={styles.controlButton}>
+          <Pressable onPress={resetMap} style={styles.controlButton}>
             <Text style={styles.resetText}>⌂</Text>
           </Pressable>
         </View>
         <View style={styles.legend}>
-          <LegendDot color={colors.blue} label="Viewpoint" />
-          <LegendDot color={colors.cyan} label="Waterline" />
-          <LegendDot color="#ad5cff" label="Canopy" />
+          <LegendDot color={colors.blue} label="Storm core" />
+          <LegendDot color={colors.cyan} label="Lagoon base" />
+          <LegendDot color="#ad5cff" label="Clear-sky link" />
+        </View>
+        <View style={styles.mapLabel}>
+          <Text style={styles.mapLabelText}>Catatumbo focus</Text>
+          <Text style={styles.mapLabelSub}>Lake Maracaibo night system</Text>
         </View>
         {selected ? (
           <View style={styles.selectedCard}>
@@ -142,11 +151,11 @@ export function RouteAtlasScreen({
               style={styles.closeButton}>
               <Text style={styles.closeText}>×</Text>
             </Pressable>
-            <PlaceCard
+            <LightningSiteCard
               compact
-              place={selected}
+              site={selected}
               onPress={() =>
-                navigate({name: 'placeDetail', placeId: selected.id})
+                navigate({name: 'siteDetail', siteId: selected.id})
               }
             />
           </View>
@@ -197,6 +206,17 @@ const styles = StyleSheet.create({
     top: '50%',
     height: 1,
     backgroundColor: 'rgba(79, 145, 255, 0.18)',
+  },
+  catatumboPulse: {
+    position: 'absolute',
+    left: '12%',
+    top: '14%',
+    width: 138,
+    height: 138,
+    borderRadius: 69,
+    borderWidth: 2,
+    borderColor: 'rgba(79, 145, 255, 0.2)',
+    backgroundColor: 'rgba(29, 97, 255, 0.08)',
   },
   controls: {
     position: 'absolute',
@@ -286,6 +306,31 @@ const styles = StyleSheet.create({
     color: '#b5c4e6',
     fontSize: 11,
     fontWeight: '800',
+  },
+  mapLabel: {
+    position: 'absolute',
+    left: 12,
+    bottom: 12,
+    maxWidth: 180,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: 'rgba(7, 13, 31, 0.82)',
+    paddingHorizontal: 11,
+    paddingVertical: 9,
+  },
+  mapLabelText: {
+    color: colors.text,
+    fontSize: 12,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  mapLabelSub: {
+    color: colors.dim,
+    fontSize: 11,
+    lineHeight: 15,
+    fontWeight: '700',
+    marginTop: 3,
   },
   selectedCard: {
     position: 'absolute',

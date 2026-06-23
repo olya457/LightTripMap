@@ -1,70 +1,65 @@
-import {media} from '../assets/media';
-import {ReadinessQuestion} from '../types';
+import {lightningMedia} from '../assets/media';
+import {StormReadinessQuestion} from '../types';
 
-export const readinessQuestions: ReadinessQuestion[] = [
+export const stormReadinessQuestions: StormReadinessQuestion[] = [
   {
-    id: 'route-anchor',
-    question:
-      'What makes a route feel clear instead of crowded?',
+    id: 'watch-window-anchor',
+    question: 'What should anchor a Catatumbo lightning night?',
     options: [
-      'One anchor stop with two lighter nearby stops',
-      'As many distant places as possible',
-      'Only places with the same scenery',
-      'No planned return point',
+      'One confirmed watch window with a return plan',
+      'As many distant sites as possible',
+      'A route with no shelter point',
+      'A transfer that starts only after midnight',
     ],
-    answer: 'One anchor stop with two lighter nearby stops',
-    image: media.checkSkyOrb,
+    answer: 'One confirmed watch window with a return plan',
+    image: lightningMedia.checkSkyOrb,
   },
   {
-    id: 'night-buffer',
-    question:
-      'What should be added to an evening waterline plan?',
+    id: 'lagoon-arrival',
+    question: 'Why arrive at a lagoon base before full dark?',
     options: [
-      'A 30 minute timing buffer',
-      'A second phone with no charge',
-      'A faster transfer after dark',
-      'A route with no waiting point',
+      'To confirm docks, boat position, and shelter',
+      'To avoid speaking with local guides',
+      'To start the watch with an empty battery',
+      'To make the return route harder to read',
     ],
-    answer: 'A 30 minute timing buffer',
-    image: media.checkSkyChannel,
+    answer: 'To confirm docks, boat position, and shelter',
+    image: lightningMedia.checkSkyChannel,
   },
   {
-    id: 'wet-edges',
-    question:
-      'Which item matters most around docks, boats, and lagoon paths?',
+    id: 'severe-weather',
+    question: 'What is safest if weather turns severe near open water?',
     options: [
-      'Shoes with grip',
-      'Extra city shoes',
-      'Loose paper maps only',
-      'Heavy decorative gear',
+      'Move to protected shelter and wait',
+      'Stand on the most exposed dock',
+      'Wait under one isolated tree',
+      'Continue to the highest ridge immediately',
     ],
-    answer: 'Shoes with grip',
-    image: media.checkCloudPath,
+    answer: 'Move to protected shelter and wait',
+    image: lightningMedia.checkCloudPath,
   },
   {
-    id: 'weather-shift',
-    question:
-      'What is the best response if weather turns severe near open ground?',
+    id: 'watch-plan-shape',
+    question: 'Which plan shape keeps the trip flexible?',
     options: [
-      'Move to a protected area and wait',
-      'Stay on the exposed shoreline',
-      'Stand under an isolated tree',
-      'Continue to the highest ridge',
+      'One storm core, one lagoon base, one clear-sky fallback',
+      'Only remote stops with no local transfer',
+      'Five identical lake views in a row',
+      'No fallback if storms shift',
     ],
-    answer: 'Move to a protected area and wait',
-    image: media.placeMaracaiboAfterdark,
+    answer: 'One storm core, one lagoon base, one clear-sky fallback',
+    image: lightningMedia.checkBranchingSky,
   },
   {
-    id: 'local-transfer',
-    question:
-      'What should be confirmed before visiting water villages or remote parks?',
+    id: 'night-power',
+    question: 'What should be independent during a night watch?',
     options: [
-      'Pickup, return, and local transfer details',
-      'Only the photo angle',
-      'A route with no guide contact',
-      'The longest possible walking segment',
+      'Phone power, backup light, and offline notes',
+      'Only decorative camera gear',
+      'A paper plan left at the hotel',
+      'A single battery shared by everyone',
     ],
-    answer: 'Pickup, return, and local transfer details',
-    image: media.noteLongExposure,
+    answer: 'Phone power, backup light, and offline notes',
+    image: lightningMedia.noteLongExposure,
   },
 ];

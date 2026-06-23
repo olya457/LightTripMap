@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {FloatingTabBar} from '../components/FloatingTabBar';
-import {FieldNoteDetailScreen} from '../screens/FieldNoteDetailScreen';
-import {FieldNotesScreen} from '../screens/FieldNotesScreen';
-import {GuideScreen} from '../screens/GuideScreen';
-import {InsightsScreen} from '../screens/InsightsScreen';
+import {LightningBriefsScreen} from '../screens/LightningBriefsScreen';
+import {LightningHomeScreen} from '../screens/LightningHomeScreen';
+import {LightningMapScreen} from '../screens/LightningMapScreen';
+import {LightningSiteDetailScreen} from '../screens/LightningSiteDetailScreen';
 import {OnboardingScreen} from '../screens/OnboardingScreen';
-import {PlaceDetailScreen} from '../screens/PlaceDetailScreen';
-import {PlanScreen} from '../screens/PlanScreen';
-import {ReadinessScreen} from '../screens/ReadinessScreen';
-import {RouteAtlasScreen} from '../screens/RouteAtlasScreen';
-import {RouteListScreen} from '../screens/RouteListScreen';
+import {SectorListScreen} from '../screens/SectorListScreen';
+import {SignalNoteDetailScreen} from '../screens/SignalNoteDetailScreen';
+import {SignalNotesScreen} from '../screens/SignalNotesScreen';
 import {SplashScreen} from '../screens/SplashScreen';
+import {StormReadinessScreen} from '../screens/StormReadinessScreen';
+import {WatchPlanScreen} from '../screens/WatchPlanScreen';
 import {runtimeStore} from '../storage/runtimeStore';
 import {NavigationProvider, useNavigation} from './NavigationContext';
 
-const ONBOARDING_KEY = 'routeGlow.hasCompletedIntro';
+const ONBOARDING_KEY = 'lightningVenezuelaTripMap.hasCompletedIntro';
 
 type Flow = 'splash' | 'onboarding' | 'app';
 
@@ -28,7 +28,8 @@ export function AppNavigator() {
 
   useEffect(() => {
     const timer = setTimeout(() => setTimerDone(true), 5000);
-    runtimeStore.getItem(ONBOARDING_KEY)
+    runtimeStore
+      .getItem(ONBOARDING_KEY)
       .then(value => setHasSeenOnboarding(value === 'true'))
       .catch(() => setHasSeenOnboarding(false));
     return () => clearTimeout(timer);
@@ -64,23 +65,23 @@ function AppShell() {
 
   return (
     <View style={styles.root}>
-      {route.name === 'guide' ? <GuideScreen /> : null}
-      {route.name === 'routeList' ? (
-        <RouteListScreen collectionId={route.collectionId} />
+      {route.name === 'home' ? <LightningHomeScreen /> : null}
+      {route.name === 'sectorList' ? (
+        <SectorListScreen sectorId={route.sectorId} />
       ) : null}
-      {route.name === 'placeDetail' ? (
-        <PlaceDetailScreen placeId={route.placeId} />
+      {route.name === 'siteDetail' ? (
+        <LightningSiteDetailScreen siteId={route.siteId} />
       ) : null}
-      {route.name === 'plan' ? <PlanScreen /> : null}
-      {route.name === 'atlas' ? (
-        <RouteAtlasScreen selectedPlaceId={route.selectedPlaceId} />
+      {route.name === 'watch' ? <WatchPlanScreen /> : null}
+      {route.name === 'map' ? (
+        <LightningMapScreen selectedSiteId={route.selectedSiteId} />
       ) : null}
-      {route.name === 'insights' ? <InsightsScreen /> : null}
-      {route.name === 'notes' ? <FieldNotesScreen /> : null}
-      {route.name === 'noteDetail' ? (
-        <FieldNoteDetailScreen noteId={route.noteId} />
+      {route.name === 'briefs' ? <LightningBriefsScreen /> : null}
+      {route.name === 'signals' ? <SignalNotesScreen /> : null}
+      {route.name === 'signalNoteDetail' ? (
+        <SignalNoteDetailScreen noteId={route.noteId} />
       ) : null}
-      {route.name === 'check' ? <ReadinessScreen /> : null}
+      {route.name === 'ready' ? <StormReadinessScreen /> : null}
       <FloatingTabBar />
     </View>
   );

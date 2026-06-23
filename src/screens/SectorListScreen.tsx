@@ -1,51 +1,51 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {AppScreen} from '../components/AppScreen';
-import {PlaceCard} from '../components/PlaceCards';
+import {LightningSiteCard} from '../components/PlaceCards';
 import {
-  getPlacesByCollection,
-  getRouteCollection,
-  guidePlaces,
-  routeCollections,
+  getLightningSector,
+  getSitesBySector,
+  lightningSectors,
+  lightningSites,
 } from '../data/places';
 import {useNavigation} from '../navigation/NavigationContext';
 import {colors} from '../theme';
 
-export function RouteListScreen({collectionId}: {collectionId: string}) {
+export function SectorListScreen({sectorId}: {sectorId: string}) {
   const {goBack, navigate} = useNavigation();
-  const collection = getRouteCollection(collectionId);
+  const sector = getLightningSector(sectorId);
   const items =
-    collectionId === 'all' ? guidePlaces : getPlacesByCollection(collectionId);
-  const title = collection?.title ?? 'Complete Guide';
+    sectorId === 'all' ? lightningSites : getSitesBySector(sectorId);
+  const title = sector?.title ?? 'All Watch Sites';
 
   return (
     <AppScreen scroll>
       <View style={styles.header}>
-        <Pressable onPress={() => goBack({name: 'guide'})} style={styles.back}>
-          <Text style={styles.backText}>‹ Back</Text>
+        <Pressable onPress={() => goBack({name: 'home'})} style={styles.back}>
+          <Text style={styles.backText}>‹ Home</Text>
         </Pressable>
         <Text style={styles.headerTitle}>{title}</Text>
         <View style={styles.backSpace} />
       </View>
       <Text style={styles.count}>
-        {items.length} stops ready for the route
+        {items.length} observation windows for Lightning Venezuela Trip Map
       </Text>
-      {collectionId === 'all' ? (
+      {sectorId === 'all' ? (
         <View style={styles.collectionRow}>
-          {routeCollections.map(item => (
+          {lightningSectors.map(item => (
             <View key={item.id} style={styles.collectionPill}>
               <Text style={styles.collectionPillText}>
-                {item.emoji} {item.title}
+                {item.symbol} {item.title}
               </Text>
             </View>
           ))}
         </View>
       ) : null}
       {items.map(item => (
-        <PlaceCard
+        <LightningSiteCard
           key={item.id}
-          place={item}
-          onPress={() => navigate({name: 'placeDetail', placeId: item.id})}
+          site={item}
+          onPress={() => navigate({name: 'siteDetail', siteId: item.id})}
         />
       ))}
     </AppScreen>
@@ -73,9 +73,11 @@ const styles = StyleSheet.create({
     width: 76,
   },
   headerTitle: {
+    flex: 1,
     color: colors.text,
     fontSize: 17,
     fontWeight: '900',
+    textAlign: 'center',
   },
   count: {
     color: colors.dim,

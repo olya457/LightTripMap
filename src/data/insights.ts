@@ -1,139 +1,85 @@
-import {Insight, InsightGroup} from '../types';
+import {LightningBrief, LightningBriefGroup} from '../types';
 
-export const insightGroups: InsightGroup[] = [
-  {id: 'timing', title: 'Timing', emoji: '◎'},
-  {id: 'regions', title: 'Regions', emoji: '◇'},
-  {id: 'safety', title: 'Safety', emoji: '✦'},
+export const lightningBriefGroups: LightningBriefGroup[] = [
+  {id: 'windows', title: 'Windows', symbol: '◎'},
+  {id: 'signals', title: 'Signals', symbol: '◇'},
+  {id: 'safety', title: 'Safety', symbol: '✦'},
 ];
 
-export const insightCards: Insight[] = [
+export const lightningBriefs: LightningBrief[] = [
   {
-    id: 'start-with-water',
-    groupId: 'timing',
-    title: 'Start With Water Stops',
-    body:
-      'Waterline places are easier to orient around at the beginning of a route. They give the plan clear landmarks before moving into forest or highland segments.',
+    id: 'catatumbo-night-peak',
+    groupId: 'windows',
+    title: 'Treat Catatumbo as a Night System',
+    body: 'The main watch plan should be built around evening arrival, a patient night window, and a confirmed return. The app now prioritizes watch windows instead of generic daytime sightseeing.',
   },
   {
-    id: 'leave-night-buffer',
-    groupId: 'timing',
-    title: 'Leave a Night Buffer',
-    body:
-      'Evening routes need extra time for transfers, loading gear, and waiting for the sky to settle. A 30 minute buffer keeps the plan relaxed instead of rushed.',
+    id: 'arrive-before-dark',
+    groupId: 'windows',
+    title: 'Arrive Before Full Dark',
+    body: 'Reach lagoon or village bases while the route is still readable. It gives time to confirm docks, boat position, shelter, and the exact place to wait before lightning activity becomes the focus.',
   },
   {
-    id: 'pair-one-anchor',
-    groupId: 'timing',
-    title: 'Pair One Anchor With Two Small Stops',
-    body:
-      'A strong route often works best with one main destination and two lighter nearby stops. This keeps the day varied without turning it into a checklist.',
+    id: 'one-core-two-fallbacks',
+    groupId: 'windows',
+    title: 'Use One Core and Two Fallbacks',
+    body: 'A strong watch plan uses one Catatumbo core site, one lagoon base, and one clear-sky fallback. That keeps the itinerary unique without turning the trip into a crowded checklist.',
   },
   {
-    id: 'shorten-humid-days',
-    groupId: 'timing',
-    title: 'Shorten Humid Days',
-    body:
-      'On very humid days, shorter walking segments usually feel better than packed schedules. Save the longer transfers for cooler morning or evening windows.',
+    id: 'late-night-margin',
+    groupId: 'windows',
+    title: 'Keep a Late-Night Margin',
+    body: 'Storm timing can shift. Keep margin for loading gear, waiting through rain, and returning safely after the best flashes instead of planning a tight transfer immediately after the watch.',
   },
   {
-    id: 'use-return-light',
-    groupId: 'timing',
-    title: 'Use Return Light',
-    body:
-      'When a stop has strong reflections or ridgelines, the return leg can be as valuable as the arrival. Avoid planning every route as a one-way rush.',
+    id: 'cloud-build-signal',
+    groupId: 'signals',
+    title: 'Watch the Cloud Build, Not Just Flashes',
+    body: 'Useful signals include stacked clouds over the lake, sudden wind changes, and darker bands near the horizon. These are more practical than chasing the first visible flash.',
   },
   {
-    id: 'keep-one-open-slot',
-    groupId: 'timing',
-    title: 'Keep One Open Slot',
-    body:
-      'A blank slot in the plan gives room for local advice, weather shifts, or a place that deserves more time once you arrive.',
+    id: 'water-reflection-signal',
+    groupId: 'signals',
+    title: 'Reflections Help You Read Distance',
+    body: 'Water reflections make far lightning easier to track. A dock, lagoon edge, or open water base can be more useful than a high point when the goal is observing the Catatumbo glow.',
   },
   {
-    id: 'lake-and-ridge',
-    groupId: 'regions',
-    title: 'Lake and Ridge Routes Feel Different',
-    body:
-      'Lake stops are open, reflective, and horizontal. Ridge stops are cooler, more layered, and slower. Mixing both makes the itinerary feel more deliberate.',
+    id: 'village-scale-signal',
+    groupId: 'signals',
+    title: 'Village Scale Keeps the Map Specific',
+    body: 'Stilt villages, docks, and boat lanes give the lightning plan a local shape. They also help travelers understand where they can wait respectfully and where movement should stay limited.',
   },
   {
-    id: 'villages-add-scale',
-    groupId: 'regions',
-    title: 'Villages Add Scale',
-    body:
-      'Small water villages keep a scenic route from feeling anonymous. They add docks, homes, boats, and everyday details that help the place feel specific.',
+    id: 'ridge-as-contrast',
+    groupId: 'signals',
+    title: 'Ridges Are Weather Contrast',
+    body: 'Highland and coastal mountain sites are not replacements for Catatumbo. They are contrast stops for reading cloud lines, cooling down, and saving a day when the lake window needs flexibility.',
   },
   {
-    id: 'forests-need-margin',
-    groupId: 'regions',
-    title: 'Forests Need More Margin',
-    body:
-      'Canopy routes often move slower because trails, humidity, and visibility change quickly. Give forest stops more time than their map distance suggests.',
-  },
-  {
-    id: 'coast-is-a-soft-finish',
-    groupId: 'regions',
-    title: 'Coastlines Make Soft Finishes',
-    body:
-      'A coastal stop is a good final segment after intense lake or highland routes. It gives the itinerary a wider, calmer ending.',
-  },
-  {
-    id: 'repeat-maracaibo-with-purpose',
-    groupId: 'regions',
-    title: 'Repeat Maracaibo With Purpose',
-    body:
-      'The same basin can support more than one route if each stop has a different role: village detail, open horizon, boat transfer, or night observation.',
-  },
-  {
-    id: 'tepui-stops-anchor-longer-plans',
-    groupId: 'regions',
-    title: 'Tepui Stops Anchor Longer Plans',
-    body:
-      'Plateau and tableland destinations are best used as central anchors rather than quick extras. They make the whole plan feel more expansive.',
-  },
-  {
-    id: 'confirm-local-transfer',
+    id: 'confirm-boat-chain',
     groupId: 'safety',
-    title: 'Confirm Local Transfers',
-    body:
-      'For water villages, lagoons, and remote parks, confirm local transfers before the day starts. A beautiful plan still depends on a reliable way in and out.',
+    title: 'Confirm the Boat Chain',
+    body: 'Before any night watch, confirm pickup, return, shelter, and who is responsible for timing. A beautiful lightning plan still depends on a reliable way back.',
   },
   {
-    id: 'pack-for-wet-edges',
+    id: 'avoid-exposed-waiting',
     groupId: 'safety',
-    title: 'Pack for Wet Edges',
-    body:
-      'Even when the plan is not a hike, docks, boats, and lagoon paths can be wet. Dry bags and shoes with grip matter more than extra accessories.',
+    title: 'Avoid Exposed Waiting',
+    body: 'If weather turns severe, do not wait on open shore, isolated docks, exposed ridges, or under a lone tree. Move to protected shelter and let the watch window adjust.',
   },
   {
-    id: 'avoid-open-ground',
+    id: 'keep-power-independent',
     groupId: 'safety',
-    title: 'Avoid Open Ground During Bad Weather',
-    body:
-      'If weather turns severe, move away from exposed shoreline, isolated trees, and open ridges. Wait from a protected area and keep the route flexible.',
+    title: 'Keep Power Independent',
+    body: 'Night observation needs a charged phone, offline notes, a small backup light, and a dry way to store them. The whole plan should not depend on one battery.',
   },
   {
-    id: 'share-the-plan',
+    id: 'respect-stilt-communities',
     groupId: 'safety',
-    title: 'Share the Plan',
-    body:
-      'Send the route order and expected return time to someone off-route, especially when the plan includes boats, wetlands, or remote forest sections.',
-  },
-  {
-    id: 'respect-local-rhythm',
-    groupId: 'safety',
-    title: 'Respect Local Rhythm',
-    body:
-      'Villages and park communities are not scenery. Move slowly, ask before photographing people, and let local guides set the pace where needed.',
-  },
-  {
-    id: 'night-route-power',
-    groupId: 'safety',
-    title: 'Carry Independent Power',
-    body:
-      'Night routes need a charged phone, a small backup light, and offline notes. Do not make the whole plan depend on a single battery.',
+    title: 'Respect Stilt Communities',
+    body: 'Floating and stilt villages are living places. Ask before photographing people, keep night noise down, and let local guides set the pace around homes and docks.',
   },
 ];
 
-export const getInsightsByGroup = (groupId: string) =>
-  insightCards.filter(insight => insight.groupId === groupId);
+export const getBriefsByGroup = (groupId: string) =>
+  lightningBriefs.filter(brief => brief.groupId === groupId);

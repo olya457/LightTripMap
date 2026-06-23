@@ -1,34 +1,29 @@
-import {media} from '../assets/media';
+import {lightningMedia} from '../assets/media';
 
 export const onboardingSlides = [
   {
-    image: media.introRouteCover,
-    title: 'RouteGlow Fieldbook',
-    body:
-      'Plan atmospheric routes through water villages, highland viewpoints, and deep green parks with one focused travel guide.',
+    image: lightningMedia.introStormCover,
+    title: 'Lightning Venezuela Trip Map',
+    body: 'Plan a Venezuela trip around Catatumbo lightning windows, lagoon bases, and clear-sky fallback stops.',
   },
   {
-    image: media.introPlaceGrid,
-    title: 'Choose Route Collections',
-    body:
-      'Browse curated stops by route mood: afterdark viewpoints, waterline passages, and canopy escapes.',
+    image: lightningMedia.introWatchGrid,
+    title: 'Build Watch Windows',
+    body: 'Browse storm-core sites, water-access bases, and weather fallback links with a clear role for every saved place.',
   },
   {
-    image: media.introRouteAtlas,
-    title: 'Use the Route Atlas',
-    body:
-      'Open the map, focus a stop, and keep nearby places visible while shaping the next leg of the plan.',
+    image: lightningMedia.introMapBackdrop,
+    title: 'Track the Lightning Map',
+    body: 'Open the map, focus an observation site, and compare storm-core markers with lagoon and highland alternatives.',
   },
   {
-    image: media.introLocalNotes,
-    title: 'Read Practical Notes',
-    body:
-      'Use compact field notes and tips for pacing, transfers, safety, and route timing before you go.',
+    image: lightningMedia.introSignalNotes,
+    title: 'Read Signal Notes',
+    body: 'Use compact field notes for Catatumbo timing, boat logistics, night photography, and respectful village movement.',
   },
   {
-    image: media.introReadinessCheck,
-    title: 'Check Your Plan',
-    body:
-      'Run a quick readiness check so the route has the right stops, timing, and fallback details.',
+    image: lightningMedia.introReadinessCheck,
+    title: 'Run the Storm Check',
+    body: 'Answer a short readiness quiz before the night watch so shelter, return, power, and fallback details are covered.',
   },
 ];

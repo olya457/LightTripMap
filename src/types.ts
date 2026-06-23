@@ -1,29 +1,29 @@
 import {ImageSourcePropType} from 'react-native';
 
-export type MainTab = 'guide' | 'plan' | 'atlas' | 'insights' | 'notes' | 'check';
+export type MainTab = 'home' | 'watch' | 'map' | 'briefs' | 'signals' | 'ready';
 
 export type AppRoute =
-  | {name: 'guide'}
-  | {name: 'routeList'; collectionId: string}
-  | {name: 'placeDetail'; placeId: string; backTo?: AppRoute}
-  | {name: 'plan'}
-  | {name: 'atlas'; selectedPlaceId?: string}
-  | {name: 'insights'}
-  | {name: 'notes'}
-  | {name: 'noteDetail'; noteId: string}
-  | {name: 'check'};
+  | {name: 'home'}
+  | {name: 'sectorList'; sectorId: string}
+  | {name: 'siteDetail'; siteId: string; backTo?: AppRoute}
+  | {name: 'watch'}
+  | {name: 'map'; selectedSiteId?: string}
+  | {name: 'briefs'}
+  | {name: 'signals'}
+  | {name: 'signalNoteDetail'; noteId: string}
+  | {name: 'ready'};
 
-export type RouteCollection = {
+export type LightningSector = {
   id: string;
   title: string;
   eyebrow: string;
-  emoji: string;
+  symbol: string;
   gradient: [string, string];
 };
 
-export type GuidePlace = {
+export type LightningSite = {
   id: string;
-  collectionId: string;
+  sectorId: string;
   title: string;
   place: string;
   coordinates: {
@@ -33,23 +33,26 @@ export type GuidePlace = {
   tag: string;
   description: string;
   image: ImageSourcePropType;
-  routeType: 'viewpoint' | 'waterline' | 'canopy';
+  watchType: 'stormCore' | 'lagoonBase' | 'clearSkyLink';
+  lightningWindow: string;
+  signal: string;
+  fieldRole: string;
 };
 
-export type InsightGroup = {
+export type LightningBriefGroup = {
   id: string;
   title: string;
-  emoji: string;
+  symbol: string;
 };
 
-export type Insight = {
+export type LightningBrief = {
   id: string;
   groupId: string;
   title: string;
   body: string;
 };
 
-export type FieldNote = {
+export type SignalNote = {
   id: string;
   title: string;
   subtitle: string;
@@ -60,7 +63,7 @@ export type FieldNote = {
   body: string[];
 };
 
-export type ReadinessQuestion = {
+export type StormReadinessQuestion = {
   id: string;
   question: string;
   options: string[];

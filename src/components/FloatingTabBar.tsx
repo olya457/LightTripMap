@@ -1,16 +1,22 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import {colors, getNavigationMetrics} from '../theme';
 import {MainTab} from '../types';
 import {useNavigation} from '../navigation/NavigationContext';
 
 const tabs: {key: MainTab; label: string; emoji: string}[] = [
-  {key: 'guide', label: 'Guide', emoji: '◎'},
-  {key: 'plan', label: 'Plan', emoji: '◇'},
-  {key: 'atlas', label: 'Atlas', emoji: '⌖'},
-  {key: 'insights', label: 'Tips', emoji: '✦'},
-  {key: 'notes', label: 'Notes', emoji: '◫'},
-  {key: 'check', label: 'Check', emoji: '?'},
+  {key: 'home', label: 'Home', emoji: '◎'},
+  {key: 'watch', label: 'Watch', emoji: '◇'},
+  {key: 'map', label: 'Map', emoji: '⌖'},
+  {key: 'briefs', label: 'Briefs', emoji: '✦'},
+  {key: 'signals', label: 'Signals', emoji: '◫'},
+  {key: 'ready', label: 'Ready', emoji: '?'},
 ];
 
 export function FloatingTabBar() {
@@ -41,10 +47,7 @@ export function FloatingTabBar() {
             <Pressable
               key={tab.key}
               onPress={() => openTab(tab.key)}
-              style={({pressed}) => [
-                styles.item,
-                pressed && styles.pressed,
-              ]}>
+              style={({pressed}) => [styles.item, pressed && styles.pressed]}>
               <View
                 style={[
                   styles.iconWrap,

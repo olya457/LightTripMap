@@ -2,43 +2,45 @@ import React, {useMemo, useState} from 'react';
 import {Pressable, Share, StyleSheet, Text, View} from 'react-native';
 import {AppScreen} from '../components/AppScreen';
 import {Button} from '../components/Buttons';
-import {getInsightsByGroup, insightCards, insightGroups} from '../data/insights';
+import {
+  getBriefsByGroup,
+  lightningBriefGroups,
+  lightningBriefs,
+} from '../data/insights';
 import {colors, shadow} from '../theme';
 
-export function InsightsScreen() {
-  const [groupId, setGroupId] = useState('timing');
-  const groupInsights = getInsightsByGroup(groupId);
-  const [insightId, setInsightId] = useState(groupInsights[0]?.id);
-  const currentInsight = useMemo(
-    () => insightCards.find(insight => insight.id === insightId) ?? groupInsights[0],
-    [groupInsights, insightId],
+export function LightningBriefsScreen() {
+  const [groupId, setGroupId] = useState('windows');
+  const groupBriefs = getBriefsByGroup(groupId);
+  const [briefId, setBriefId] = useState(groupBriefs[0]?.id);
+  const currentBrief = useMemo(
+    () => lightningBriefs.find(brief => brief.id === briefId) ?? groupBriefs[0],
+    [groupBriefs, briefId],
   );
-  const index = groupInsights.findIndex(
-    insight => insight.id === currentInsight.id,
-  );
+  const index = groupBriefs.findIndex(brief => brief.id === currentBrief.id);
 
   const selectGroup = (nextGroupId: string) => {
-    const nextInsights = getInsightsByGroup(nextGroupId);
+    const nextBriefs = getBriefsByGroup(nextGroupId);
     setGroupId(nextGroupId);
-    setInsightId(nextInsights[0]?.id);
+    setBriefId(nextBriefs[0]?.id);
   };
 
-  const randomInsight = () => {
-    const item = groupInsights[Math.floor(Math.random() * groupInsights.length)];
-    setInsightId(item.id);
+  const randomBrief = () => {
+    const item = groupBriefs[Math.floor(Math.random() * groupBriefs.length)];
+    setBriefId(item.id);
   };
 
-  const shareInsight = () => {
+  const shareBrief = () => {
     Share.share({
-      title: currentInsight.title,
-      message: `${currentInsight.title}\n${currentInsight.body}`,
+      title: currentBrief.title,
+      message: `${currentBrief.title}\n${currentBrief.body}`,
     });
   };
 
   return (
-    <AppScreen eyebrow="Route Sense" title="Travel Tips">
+    <AppScreen eyebrow="Lightning Briefs" title="Watch Intelligence">
       <View style={styles.tabs}>
-        {insightGroups.map(group => {
+        {lightningBriefGroups.map(group => {
           const active = group.id === groupId;
           return (
             <Pressable
@@ -46,7 +48,7 @@ export function InsightsScreen() {
               onPress={() => selectGroup(group.id)}
               style={[styles.tab, active && styles.activeTab]}>
               <Text style={[styles.tabText, active && styles.activeTabText]}>
-                {group.emoji} {group.title}
+                {group.symbol} {group.title}
               </Text>
             </Pressable>
           );
@@ -55,48 +57,48 @@ export function InsightsScreen() {
       <View style={styles.feature}>
         <View style={styles.factIcon}>
           <Text style={styles.factIconText}>
-            {insightGroups.find(item => item.id === groupId)?.emoji}
+            {lightningBriefGroups.find(item => item.id === groupId)?.symbol}
           </Text>
         </View>
         <Text style={styles.count}>
-          {index + 1}/{groupInsights.length}
+          {index + 1}/{groupBriefs.length}
         </Text>
-        <Text style={styles.factTitle}>{currentInsight.title}</Text>
-        <Text style={styles.factBody}>{currentInsight.body}</Text>
+        <Text style={styles.factTitle}>{currentBrief.title}</Text>
+        <Text style={styles.factBody}>{currentBrief.body}</Text>
       </View>
       <View style={styles.factList}>
-        {groupInsights.map(insight => (
+        {groupBriefs.map(brief => (
           <Pressable
-            key={insight.id}
-            onPress={() => setInsightId(insight.id)}
+            key={brief.id}
+            onPress={() => setBriefId(brief.id)}
             style={[
               styles.factRow,
-              insight.id === currentInsight.id && styles.activeFactRow,
+              brief.id === currentBrief.id && styles.activeFactRow,
             ]}>
             <Text
               numberOfLines={2}
               style={[
                 styles.factRowText,
-                insight.id === currentInsight.id && styles.activeFactRowText,
+                brief.id === currentBrief.id && styles.activeFactRowText,
               ]}>
-              {insight.title}
+              {brief.title}
             </Text>
           </Pressable>
         ))}
       </View>
       <View style={styles.actions}>
         <Button
-          title="Share Tip"
+          title="Share Brief"
           emoji="↗"
           variant="ghost"
-          onPress={shareInsight}
+          onPress={shareBrief}
           style={styles.action}
         />
         <Button
           title="Random"
           emoji="✦"
           variant="ghost"
-          onPress={randomInsight}
+          onPress={randomBrief}
           style={styles.action}
         />
       </View>

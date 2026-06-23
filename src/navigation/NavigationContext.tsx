@@ -1,4 +1,10 @@
-import React, {createContext, ReactNode, useContext, useMemo, useState} from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import {AppRoute, MainTab} from '../types';
 
 type NavigationValue = {
@@ -9,36 +15,36 @@ type NavigationValue = {
   goBack: (fallback?: AppRoute) => void;
 };
 
-const initialRoute: AppRoute = {name: 'guide'};
+const initialRoute: AppRoute = {name: 'home'};
 
 const NavigationContext = createContext<NavigationValue | undefined>(undefined);
 
 const tabRoutes: Record<MainTab, AppRoute> = {
-  guide: {name: 'guide'},
-  plan: {name: 'plan'},
-  atlas: {name: 'atlas'},
-  insights: {name: 'insights'},
-  notes: {name: 'notes'},
-  check: {name: 'check'},
+  home: {name: 'home'},
+  watch: {name: 'watch'},
+  map: {name: 'map'},
+  briefs: {name: 'briefs'},
+  signals: {name: 'signals'},
+  ready: {name: 'ready'},
 };
 
 function getTab(route: AppRoute): MainTab {
-  if (route.name === 'plan') {
-    return 'plan';
+  if (route.name === 'watch') {
+    return 'watch';
   }
-  if (route.name === 'atlas') {
-    return 'atlas';
+  if (route.name === 'map') {
+    return 'map';
   }
-  if (route.name === 'insights') {
-    return 'insights';
+  if (route.name === 'briefs') {
+    return 'briefs';
   }
-  if (route.name === 'notes' || route.name === 'noteDetail') {
-    return 'notes';
+  if (route.name === 'signals' || route.name === 'signalNoteDetail') {
+    return 'signals';
   }
-  if (route.name === 'check') {
-    return 'check';
+  if (route.name === 'ready') {
+    return 'ready';
   }
-  return 'guide';
+  return 'home';
 }
 
 export function NavigationProvider({children}: {children: ReactNode}) {
@@ -54,7 +60,9 @@ export function NavigationProvider({children}: {children: ReactNode}) {
       openTab: tab => setStack([tabRoutes[tab]]),
       goBack: fallback =>
         setStack(current =>
-          current.length > 1 ? current.slice(0, -1) : [fallback ?? initialRoute],
+          current.length > 1
+            ? current.slice(0, -1)
+            : [fallback ?? initialRoute],
         ),
     }),
     [activeTab, route],

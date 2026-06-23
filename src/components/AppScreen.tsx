@@ -39,7 +39,8 @@ export function AppScreen({
   const header = (eyebrow || title) && (
     <View style={[styles.header, metrics.compact && styles.headerCompact]}>
       {eyebrow ? (
-        <Text style={[styles.eyebrow, metrics.compact && styles.eyebrowCompact]}>
+        <Text
+          style={[styles.eyebrow, metrics.compact && styles.eyebrowCompact]}>
           {eyebrow}
         </Text>
       ) : null}
@@ -77,8 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
     paddingTop: layout.androidInset + layout.statusTopGap,
   },
-  content: {
-  },
+  content: {},
   fill: {
     flex: 1,
   },

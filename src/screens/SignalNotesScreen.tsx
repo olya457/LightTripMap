@@ -1,20 +1,32 @@
 import React from 'react';
-import {Image, ImageBackground, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {AppScreen} from '../components/AppScreen';
-import {fieldNotes} from '../data/fieldNotes';
+import {signalNotes} from '../data/fieldNotes';
 import {useNavigation} from '../navigation/NavigationContext';
 import {colors} from '../theme';
 
-export function FieldNotesScreen() {
+export function SignalNotesScreen() {
   const {navigate} = useNavigation();
-  const [featured, ...rest] = fieldNotes;
+  const [featured, ...rest] = signalNotes;
 
   return (
-    <AppScreen eyebrow="Field Notes" title="Route Notes">
+    <AppScreen eyebrow="Signal Notes" title="Catatumbo Field Notes">
       <Pressable
-        onPress={() => navigate({name: 'noteDetail', noteId: featured.id})}
+        onPress={() =>
+          navigate({name: 'signalNoteDetail', noteId: featured.id})
+        }
         style={styles.featured}>
-        <ImageBackground source={featured.image} style={styles.featuredImage} imageStyle={styles.imageRadius}>
+        <ImageBackground
+          source={featured.image}
+          style={styles.featuredImage}
+          imageStyle={styles.imageRadius}>
           <View style={styles.shade} />
           <View style={styles.tag}>
             <Text style={styles.tagText}>Featured</Text>
@@ -25,20 +37,24 @@ export function FieldNotesScreen() {
           <Text numberOfLines={2} style={styles.subtitle}>
             {featured.subtitle}
           </Text>
-          <Text style={styles.meta}>{featured.date}   {featured.readTime}</Text>
+          <Text style={styles.meta}>
+            {featured.date} {featured.readTime}
+          </Text>
         </View>
       </Pressable>
       {rest.map(note => (
         <Pressable
           key={note.id}
-          onPress={() => navigate({name: 'noteDetail', noteId: note.id})}
+          onPress={() => navigate({name: 'signalNoteDetail', noteId: note.id})}
           style={styles.row}>
           <Image source={note.image} style={styles.rowImage} />
           <View style={styles.rowBody}>
             <Text numberOfLines={2} style={styles.rowTitle}>
               {note.title}
             </Text>
-            <Text style={styles.rowMeta}>{note.date}   {note.readTime}</Text>
+            <Text style={styles.rowMeta}>
+              {note.date} {note.readTime}
+            </Text>
           </View>
           <Text style={styles.rowArrow}>›</Text>
         </Pressable>

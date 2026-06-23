@@ -11,34 +11,34 @@ import {
   View,
 } from 'react-native';
 import {Button} from '../components/Buttons';
-import {getGuidePlace} from '../data/places';
+import {getLightningSite} from '../data/places';
 import {useNavigation} from '../navigation/NavigationContext';
-import {useRoutePlan} from '../storage/RoutePlanContext';
+import {useLightningWatch} from '../storage/LightningWatchContext';
 import {colors, getNavigationMetrics, layout} from '../theme';
 
-const routeTypeLabel = {
-  viewpoint: 'Viewpoint',
-  waterline: 'Waterline',
-  canopy: 'Canopy',
+const watchTypeLabel = {
+  stormCore: 'Storm core',
+  lagoonBase: 'Lagoon base',
+  clearSkyLink: 'Clear-sky link',
 };
 
-export function PlaceDetailScreen({placeId}: {placeId: string}) {
+export function LightningSiteDetailScreen({siteId}: {siteId: string}) {
   const {goBack, navigate} = useNavigation();
-  const {isPlanned, togglePlanned} = useRoutePlan();
+  const {isSavedSite, toggleSavedSite} = useLightningWatch();
   const {width, height} = useWindowDimensions();
   const metrics = getNavigationMetrics(width, height);
-  const place = getGuidePlace(placeId);
+  const site = getLightningSite(siteId);
 
-  if (!place) {
+  if (!site) {
     return null;
   }
 
-  const planned = isPlanned(place.id);
+  const saved = isSavedSite(site.id);
 
-  const sharePlace = () => {
+  const shareSite = () => {
     Share.share({
-      title: place.title,
-      message: `${place.title}\n${place.place}\n${place.description}`,
+      title: site.title,
+      message: `${site.title}\n${site.place}\n${site.lightningWindow}\n${site.description}`,
     });
   };
 
@@ -51,14 +51,16 @@ export function PlaceDetailScreen({placeId}: {placeId: string}) {
           {paddingBottom: metrics.contentBottom},
         ]}>
         <ImageBackground
-          source={place.image}
+          source={site.image}
           style={[styles.hero, metrics.compact && styles.heroCompact]}>
           <View style={styles.heroShade} />
           <View style={styles.heroActions}>
-            <Pressable onPress={() => goBack({name: 'guide'})} style={styles.topButton}>
+            <Pressable
+              onPress={() => goBack({name: 'home'})}
+              style={styles.topButton}>
               <Text style={styles.topButtonText}>‹ Back</Text>
             </Pressable>
-            <Pressable onPress={sharePlace} style={styles.roundButton}>
+            <Pressable onPress={shareSite} style={styles.roundButton}>
               <Text style={styles.roundButtonText}>↗</Text>
             </Pressable>
           </View>
@@ -66,43 +68,51 @@ export function PlaceDetailScreen({placeId}: {placeId: string}) {
         <View style={[styles.body, {paddingHorizontal: metrics.pageX}]}>
           <View style={styles.tags}>
             <View style={styles.tag}>
-              <Text style={styles.tagText}>{place.tag}</Text>
+              <Text style={styles.tagText}>{site.tag}</Text>
             </View>
             <View style={styles.tag}>
-              <Text style={styles.tagText}>{routeTypeLabel[place.routeType]}</Text>
+              <Text style={styles.tagText}>
+                {watchTypeLabel[site.watchType]}
+              </Text>
             </View>
           </View>
           <Text style={[styles.title, metrics.compact && styles.titleCompact]}>
-            {place.title}
+            {site.title}
           </Text>
-          <Text style={styles.place}>◎ {place.place}</Text>
+          <Text style={styles.place}>◎ {site.place}</Text>
           <View style={styles.coordinates}>
             <Text style={styles.coordinatesText}>
-              ⌖ {Math.abs(place.coordinates.latitude).toFixed(4)}° N,{' '}
-              {Math.abs(place.coordinates.longitude).toFixed(4)}° W
+              ⌖ {Math.abs(site.coordinates.latitude).toFixed(4)}° N,{' '}
+              {Math.abs(site.coordinates.longitude).toFixed(4)}° W
             </Text>
           </View>
-          <Text style={styles.description}>{place.description}</Text>
+          <View style={styles.windowPanel}>
+            <Text style={styles.windowLabel}>Observation window</Text>
+            <Text style={styles.windowTitle}>{site.lightningWindow}</Text>
+            <Text style={styles.windowBody}>{site.signal}</Text>
+            <Text style={styles.windowRole}>{site.fieldRole}</Text>
+          </View>
+          <Text style={styles.description}>{site.description}</Text>
           <View style={styles.actionRow}>
             <Button
-              title={planned ? 'In Plan' : 'Add Stop'}
-              emoji={planned ? '◇' : '+'}
-              variant={planned ? 'cyan' : 'ghost'}
-              onPress={() => togglePlanned(place.id)}
+              title={saved ? 'Saved' : 'Save Window'}
+              emoji={saved ? '◇' : '+'}
+              variant={saved ? 'cyan' : 'ghost'}
+              onPress={() => toggleSavedSite(site.id)}
               style={styles.rowButton}
             />
             <Button
               title="Share"
               emoji="↗"
               variant="ghost"
-              onPress={sharePlace}
+              onPress={shareSite}
               style={styles.rowButton}
             />
           </View>
           <Button
-            title="Open Atlas"
+            title="Open Lightning Map"
             emoji="⌖"
-            onPress={() => navigate({name: 'atlas', selectedPlaceId: place.id})}
+            onPress={() => navigate({name: 'map', selectedSiteId: site.id})}
           />
         </View>
       </ScrollView>
@@ -218,6 +228,41 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '900',
     letterSpacing: 1,
+  },
+  windowPanel: {
+    marginTop: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: '#080c1d',
+    padding: 14,
+  },
+  windowLabel: {
+    color: colors.dim,
+    fontSize: 10,
+    fontWeight: '900',
+    textTransform: 'uppercase',
+  },
+  windowTitle: {
+    color: colors.text,
+    fontSize: 16,
+    lineHeight: 22,
+    fontWeight: '900',
+    marginTop: 7,
+  },
+  windowBody: {
+    color: colors.muted,
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: '700',
+    marginTop: 7,
+  },
+  windowRole: {
+    color: '#4f91ff',
+    fontSize: 12,
+    fontWeight: '900',
+    marginTop: 10,
+    textTransform: 'uppercase',
   },
   description: {
     color: colors.muted,

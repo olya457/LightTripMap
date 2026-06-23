@@ -1,12 +1,12 @@
 import React from 'react';
 import {AppNavigator} from './src/navigation/AppNavigator';
-import {RoutePlanProvider} from './src/storage/RoutePlanContext';
+import {LightningWatchProvider} from './src/storage/LightningWatchContext';
 
 function App(): React.JSX.Element {
   return (
-    <RoutePlanProvider>
+    <LightningWatchProvider>
       <AppNavigator />
-    </RoutePlanProvider>
+    </LightningWatchProvider>
   );
 }
 

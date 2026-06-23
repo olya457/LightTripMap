@@ -7,18 +7,18 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {media} from '../assets/media';
+import {lightningMedia} from '../assets/media';
 import {AppScreen} from '../components/AppScreen';
 import {Button} from '../components/Buttons';
-import {PlaceCard} from '../components/PlaceCards';
-import {guidePlaces, routeCollections} from '../data/places';
+import {LightningSiteCard} from '../components/PlaceCards';
+import {lightningSectors, lightningSites} from '../data/places';
 import {useNavigation} from '../navigation/NavigationContext';
-import {useRoutePlan} from '../storage/RoutePlanContext';
+import {useLightningWatch} from '../storage/LightningWatchContext';
 import {colors, getNavigationMetrics, shadow} from '../theme';
 
-export function PlanScreen() {
+export function WatchPlanScreen() {
   const {openTab, navigate} = useNavigation();
-  const {plannedPlaceIds, removePlanned} = useRoutePlan();
+  const {savedSiteIds, removeSavedSite} = useLightningWatch();
   const {width, height} = useWindowDimensions();
   const metrics = getNavigationMetrics(width, height);
   const emptyImageSize = Math.min(
@@ -26,16 +26,23 @@ export function PlanScreen() {
     metrics.compact ? 210 : 320,
     height * (metrics.compact ? 0.3 : 0.36),
   );
-  const plannedPlaces = guidePlaces.filter(item =>
-    plannedPlaceIds.includes(item.id),
+  const savedSites = lightningSites.filter(item =>
+    savedSiteIds.includes(item.id),
+  );
+  const sectorCount = lightningSectors.filter(sector =>
+    savedSites.some(site => site.sectorId === sector.id),
+  ).length;
+  const hasStormCore = savedSites.some(site => site.watchType === 'stormCore');
+  const hasFallback = savedSites.some(
+    site => site.watchType === 'clearSkyLink',
   );
 
-  if (plannedPlaces.length === 0) {
+  if (savedSites.length === 0) {
     return (
-      <AppScreen eyebrow="Route Builder" title="Route Plan">
+      <AppScreen eyebrow="Night Builder" title="Watch Plan">
         <View style={[styles.empty, metrics.compact && styles.emptyCompact]}>
           <Image
-            source={media.introPlaceGrid}
+            source={lightningMedia.introWatchGrid}
             style={[
               styles.emptyImage,
               {width: emptyImageSize, height: emptyImageSize},
@@ -47,19 +54,23 @@ export function PlanScreen() {
               styles.emptyTitle,
               metrics.compact && styles.emptyTitleCompact,
             ]}>
-            No stops in the plan yet
+            No lightning windows saved yet
           </Text>
           <Text
             style={[
               styles.emptyBody,
               metrics.compact && styles.emptyBodyCompact,
             ]}>
-            Add places from the guide to build a route that feels intentional.
+            Save a Catatumbo storm-core site, then add a lagoon base and a
+            clear-sky fallback.
           </Text>
           <Button
-            title="Browse Guide"
-            onPress={() => openTab('guide')}
-            style={[styles.emptyButton, metrics.compact && styles.emptyButtonCompact]}
+            title="Browse Watch Sites"
+            onPress={() => openTab('home')}
+            style={[
+              styles.emptyButton,
+              metrics.compact && styles.emptyButtonCompact,
+            ]}
           />
         </View>
       </AppScreen>
@@ -67,40 +78,36 @@ export function PlanScreen() {
   }
 
   return (
-    <AppScreen eyebrow="Route Builder" title="Route Plan">
+    <AppScreen eyebrow="Night Builder" title="Watch Plan">
       <View style={styles.summary}>
-        <Text style={styles.summaryCount}>{plannedPlaces.length}</Text>
+        <Text style={styles.summaryCount}>{savedSites.length}</Text>
         <Text style={styles.summaryText}>
-          planned stops across{' '}
-          {
-            routeCollections.filter(collection =>
-              plannedPlaces.some(place => place.collectionId === collection.id),
-            ).length
-          }{' '}
-          route collections
+          saved windows across {sectorCount} lightning sectors.{' '}
+          {hasStormCore ? 'Storm core is covered.' : 'Add a storm-core site.'}{' '}
+          {hasFallback ? 'Fallback ready.' : 'Add one clear-sky fallback.'}
         </Text>
       </View>
-      {plannedPlaces.map((place, index) => (
-        <View key={place.id} style={styles.planItem}>
+      {savedSites.map((site, index) => (
+        <View key={site.id} style={styles.planItem}>
           <Text style={styles.step}>{String(index + 1).padStart(2, '0')}</Text>
-          <PlaceCard
+          <LightningSiteCard
             compact
-            planned
-            place={place}
-            onPress={() => navigate({name: 'placeDetail', placeId: place.id})}
+            saved
+            site={site}
+            onPress={() => navigate({name: 'siteDetail', siteId: site.id})}
           />
           <Pressable
-            onPress={() => removePlanned(place.id)}
+            onPress={() => removeSavedSite(site.id)}
             style={styles.removeButton}>
             <Text style={styles.removeText}>Remove</Text>
           </Pressable>
         </View>
       ))}
       <Button
-        title="Open Atlas"
+        title="Open Lightning Map"
         emoji="⌖"
         variant="ghost"
-        onPress={() => openTab('atlas')}
+        onPress={() => openTab('map')}
         style={styles.mapButton}
       />
     </AppScreen>
@@ -156,7 +163,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
   },
   summary: {
-    minHeight: 78,
+    minHeight: 88,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: colors.border,

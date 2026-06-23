@@ -1,4 +1,4 @@
-package com.routeglow.guide
+package com.lightningvenezuela.tripmap
 
 import android.app.Application
 import com.facebook.react.PackageList

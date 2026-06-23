@@ -8,16 +8,16 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import {media} from '../assets/media';
+import {lightningMedia} from '../assets/media';
 import {AppScreen} from '../components/AppScreen';
 import {Button} from '../components/Buttons';
-import {readinessQuestions} from '../data/readiness';
+import {stormReadinessQuestions} from '../data/readiness';
 import {colors, getNavigationMetrics, shadow} from '../theme';
 
 type CheckMode = 'intro' | 'playing' | 'results';
 const questionSeconds = 15;
 
-export function ReadinessScreen() {
+export function StormReadinessScreen() {
   const [mode, setMode] = useState<CheckMode>('intro');
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -33,12 +33,12 @@ export function ReadinessScreen() {
     metrics.compact ? 118 : 170,
     height * (metrics.compact ? 0.2 : 0.24),
   );
-  const question = readinessQuestions[index];
+  const question = stormReadinessQuestions[index];
   const selected = answers[question?.id];
   const timeExpired = mode === 'playing' && timeLeft === 0;
   const score = useMemo(
     () =>
-      readinessQuestions.reduce(
+      stormReadinessQuestions.reduce(
         (total, item) => total + (answers[item.id] === item.answer ? 1 : 0),
         0,
       ),
@@ -57,7 +57,7 @@ export function ReadinessScreen() {
   };
 
   const next = () => {
-    if (index === readinessQuestions.length - 1) {
+    if (index === stormReadinessQuestions.length - 1) {
       setMode('results');
       return;
     }
@@ -85,8 +85,8 @@ export function ReadinessScreen() {
 
   const shareResults = () => {
     Share.share({
-      title: 'Route Readiness Check',
-      message: `I scored ${score}/${readinessQuestions.length} in the Route Readiness Check.`,
+      title: 'Storm Readiness Check',
+      message: `I scored ${score}/${stormReadinessQuestions.length} in the Lightning Venezuela Trip Map storm readiness check.`,
     });
   };
 
@@ -95,7 +95,7 @@ export function ReadinessScreen() {
       <AppScreen scroll>
         <View style={[styles.intro, metrics.compact && styles.introCompact]}>
           <Image
-            source={media.introReadinessCheck}
+            source={lightningMedia.introReadinessCheck}
             style={[
               styles.introImage,
               {width: introImageSize, height: introImageSize},
@@ -107,24 +107,38 @@ export function ReadinessScreen() {
               styles.introTitle,
               metrics.compact && styles.introTitleCompact,
             ]}>
-            Route Readiness Check
+            Storm Readiness Check
           </Text>
           <Text
             style={[
               styles.introBody,
               metrics.compact && styles.introBodyCompact,
             ]}>
-            Check the route choices, timing, and safety details before you go.
+            Check the watch window, shelter, return, and power details before
+            the Catatumbo night plan.
           </Text>
-          <View style={[styles.infoBox, metrics.compact && styles.infoBoxCompact]}>
-            <Text style={[styles.infoText, metrics.compact && styles.infoTextCompact]}>
-              ?  5 route planning questions
+          <View
+            style={[styles.infoBox, metrics.compact && styles.infoBoxCompact]}>
+            <Text
+              style={[
+                styles.infoText,
+                metrics.compact && styles.infoTextCompact,
+              ]}>
+              ? 5 lightning watch questions
             </Text>
-            <Text style={[styles.infoText, metrics.compact && styles.infoTextCompact]}>
-              ⏱  15 seconds per question
+            <Text
+              style={[
+                styles.infoText,
+                metrics.compact && styles.infoTextCompact,
+              ]}>
+              ⏱ 15 seconds per question
             </Text>
-            <Text style={[styles.infoText, metrics.compact && styles.infoTextCompact]}>
-              ◎  Each question uses a route image
+            <Text
+              style={[
+                styles.infoText,
+                metrics.compact && styles.infoTextCompact,
+              ]}>
+              ◎ Each question uses a watch image
             </Text>
           </View>
           <Button
@@ -132,7 +146,10 @@ export function ReadinessScreen() {
             emoji="▶"
             variant="purple"
             onPress={start}
-            style={[styles.startButton, metrics.compact && styles.startButtonCompact]}
+            style={[
+              styles.startButton,
+              metrics.compact && styles.startButtonCompact,
+            ]}
           />
         </View>
       </AppScreen>
@@ -140,7 +157,7 @@ export function ReadinessScreen() {
   }
 
   if (mode === 'results') {
-    const percent = Math.round((score / readinessQuestions.length) * 100);
+    const percent = Math.round((score / stormReadinessQuestions.length) * 100);
 
     return (
       <AppScreen title="Results" scroll>
@@ -159,7 +176,7 @@ export function ReadinessScreen() {
                 styles.scoreText,
                 metrics.compact && styles.scoreTextCompact,
               ]}>
-              {score}/{readinessQuestions.length}
+              {score}/{stormReadinessQuestions.length}
             </Text>
             <Text style={styles.scorePercent}>{percent}%</Text>
           </View>
@@ -167,10 +184,10 @@ export function ReadinessScreen() {
             {score > 3 ? '✦ ✦ ✦' : '✦ · ·'}
           </Text>
           <Text style={styles.keep}>
-            {score > 3 ? 'Route Ready' : 'Tune the Plan'}
+            {score > 3 ? 'Storm Ready' : 'Tune the Watch'}
           </Text>
         </View>
-        {readinessQuestions.map(item => {
+        {stormReadinessQuestions.map(item => {
           const correct = answers[item.id] === item.answer;
           return (
             <View
@@ -221,12 +238,18 @@ export function ReadinessScreen() {
             styles.progressRow,
             metrics.compact && styles.progressRowCompact,
           ]}>
-          <Text style={styles.progressText}>{index + 1} / {readinessQuestions.length}</Text>
+          <Text style={styles.progressText}>
+            {index + 1} / {stormReadinessQuestions.length}
+          </Text>
           <View style={styles.progressTrack}>
             <View
               style={[
                 styles.progressFill,
-                {width: `${((index + 1) / readinessQuestions.length) * 100}%`},
+                {
+                  width: `${
+                    ((index + 1) / stormReadinessQuestions.length) * 100
+                  }%`,
+                },
               ]}
             />
           </View>
@@ -237,7 +260,11 @@ export function ReadinessScreen() {
               timeExpired && styles.timerExpired,
             ]}>
             <Text style={styles.timerIcon}>⏱</Text>
-            <Text style={[styles.timerText, timeExpired && styles.timerTextExpired]}>
+            <Text
+              style={[
+                styles.timerText,
+                timeExpired && styles.timerTextExpired,
+              ]}>
               {timeLeft}s
             </Text>
           </View>
@@ -254,7 +281,8 @@ export function ReadinessScreen() {
           style={[styles.question, metrics.compact && styles.questionCompact]}>
           {question.question}
         </Text>
-        <View style={[styles.options, metrics.compact && styles.optionsCompact]}>
+        <View
+          style={[styles.options, metrics.compact && styles.optionsCompact]}>
           {question.options.map((option, optionIndex) => {
             const isSelected = selected === option;
             const answered = Boolean(selected);
@@ -296,10 +324,17 @@ export function ReadinessScreen() {
           })}
         </View>
         <Button
-          title={index === readinessQuestions.length - 1 ? 'Result' : 'Next question'}
+          title={
+            index === stormReadinessQuestions.length - 1
+              ? 'Result'
+              : 'Next question'
+          }
           disabled={!selected && !timeExpired}
           onPress={next}
-          style={[styles.nextButton, metrics.compact && styles.nextButtonCompact]}
+          style={[
+            styles.nextButton,
+            metrics.compact && styles.nextButtonCompact,
+          ]}
         />
       </View>
     </AppScreen>
